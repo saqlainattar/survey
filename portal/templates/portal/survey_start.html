@@ -1,0 +1,44 @@
+{% extends "portal/base.html" %}
+
+{% block title %}{{ survey.name }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+
+        <form method="post" action="{% url "survey_start" slug=survey.slug %}" class="text-left">
+
+        {% csrf_token %}
+        <br><br>
+        {% for question in questions %}
+
+            <div class="card border-primary mb-3">
+              <div class="card-header text-white deep-blue-gradient shadow">Question {{ forloop.counter }}</div>
+              <div class=" card-body cloudy-knoxville-gradient text-primary" >
+                <h5 class="card-title">Q - {{ question.question_text }}</h5>
+                  <br>
+                   <div class="btn-group btn-group-toggle d-flex flex-column flex-md-row" data-toggle="buttons">
+                      {% for choice in question.choice_set.all %}
+                          <label id="choice_label" class="btn btn-light-blue">
+                            <input required name="choice_{{ question.id }}"  type="radio" value="{{ choice.id }}" autocomplete="off">{{ choice.get_display_choice_name }} <i class="fas {{ choice.get_icon_class }}"></i>
+                          </label>
+                      {% endfor %}
+                   </div>
+              </div>
+            </div>
+            <br>
+        {% endfor %}
+
+        <div class="md-form md-outline">
+          <textarea name="feedback" id="form75" class="md-textarea form-control" rows="3"></textarea>
+          <label for="form75" class="text-primary">Give your feedback</label>
+        </div><br><br>
+
+        <span class="alert deep-blue-gradient btn-block text-center font-weight-bold">Recheck all answers before submit</span>
+
+        <div style="margin: auto" class="col-lg-6">
+            <button style="margin: auto" type="submit" class="btn text-white blue-gradient btn-lg btn-block center">Submit the Survey</button>
+        </div>
+        </form>
+    </div>
+    <br><br><br>
+{% endblock %}

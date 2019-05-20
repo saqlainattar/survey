@@ -1,0 +1,55 @@
+{% extends "portal/base.html" %}
+
+{% block title %}{{ survey.name }}{% endblock %}
+
+{% block content %}
+    <br><br><br>
+    <div class="container">
+
+
+
+
+
+     <div class="card border-primary">
+          <div class="card-header blue-gradient text-white">
+              <h5 class="font-weight-bold text-lg-center">Administration Login</h5>
+          </div>
+          <div class=" card-body">
+
+            <form class="text-center p-5" method="post">
+
+                {% csrf_token %}
+
+                <!-- Email -->
+                <input type="text" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="Username" name="username">
+
+                <!-- Password -->
+                <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password" name="password">
+
+                {% if form.errors %}
+                    {% if "invalid_login" in form.error_messages %}
+                            <br>
+                            <span class="alert alert-danger btn-block">Please enter correct username and password</span>
+                    {% endif %}
+                {% endif %}
+
+                <!-- Sign in button -->
+                <button class="btn btn-info btn-block my-4" type="submit">Login as Admin</button>
+                <br>
+                <span class="text-info">Note : Normal users do not require login. It is only for admin.</span>
+                <u><a class="text-center text-primary" href="{% url 'home' %}">return to homepage</a></u>
+
+
+           </form>
+
+
+          </div>
+
+        </div>
+
+
+
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "portal/base.html" %}
+{% block title %}Survey Submitted {% endblock %}
+
+{% block content %}
+    <br><br><br>
+    <div class="container" style="height: 800px">
+
+        <div class="card border-primary text-center">
+          <div class="card-header bg-primary text-white">
+              <h5 class="font-weight-bold text-lg-center">Survey Submitted Successfuly</h5>
+          </div>
+          <div class="cloudy-knoxville-gradient card-body">
+            <p class="card-title">Survey has been submitted. Thanks for sharing your views with us.</p>
+            <br><br>
+
+            <div class="col-lg-6" style="margin: auto">
+                <a href="{% url "home" %}" class="btn btn-primary blue-gradient btn-lg btn-block" >GO BACK</a>
+            </div>
+          </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}

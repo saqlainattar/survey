@@ -1,0 +1,117 @@
+{% extends "portal/base.html" %}
+
+{% block title %}{{ survey.name }}{% endblock %}
+
+{% block content %}
+    <br>
+    <div class="col-lg-11" style="margin: auto">
+
+        <h5 class="font-weight-bold text-primary text-lg-center">{{ survey.name }} Report | {{ survey.get_success_percentage|floatformat }} % Possitive from {{ total_votes }} Peoples</h5>
+        <hr>
+
+        {% for question, mini_dict in report_dict.items %}
+             <div class="card border-primary mb-3" style="margin: auto; padding: auto">
+                 <div class="card-header text-white blue-gradient shadow">
+                     Q{{ forloop.counter }}- {{ question.question_text }} |
+                     Total Votes = {{ question.get_total_votes }} |
+                     Average = {{ question.get_response_average }} |
+                     Possitive Response = {{ question.get_possitive_response }} %
+                 </div>
+                 <br>
+                 <div class="row">
+                    <div class="col-lg-5">
+                         <canvas id="chart_{{ question.id }}" style="max-width: 700px;"></canvas>
+                     </div>
+                     <div class="col-lg-2"></div>
+                     <div class="col-lg-5">
+                         <canvas id="piechart_{{ question.id }}" style="max-width: 700px;"></canvas>
+                     </div>
+                 </div>
+
+                 <br>
+             </div>
+             <br>
+        {% endfor %}
+            <div class="col-lg-6" style="margin: auto">
+                <a href="{% url "home" %}" class="btn btn-primary blue-gradient btn-lg btn-block" >GO BACK</a>
+            </div>
+    </div>
+
+{% endblock %}
+
+
+
+{% block extrajs %}
+
+    <script>
+
+        {% for question , mini_dict in report_dict.items %}
+
+          var ctx{{ question.id }} = document.getElementById("chart_{{ question.id }}").getContext('2d');
+          var myChart{{ question.id }} = new Chart(ctx{{ question.id }}, {
+            type: 'bar',
+            data: {
+              labels: [{% for choice in mini_dict.keys %}"{{ choice.get_chart_text }}", {% endfor %}],
+              datasets: [{
+                label: 'out off {{ question.get_total_votes }} Votes',
+                  data: [{% for count in mini_dict.values %}{{ count }}, {% endfor %}],
+                backgroundColor: [{% for choice in mini_dict.keys %}"{{ choice.get_possitive_color }}", {% endfor %}],
+                {#borderColor: [#}
+                {#  'rgba(255,99,132,1)',#}
+                {#  'rgba(54, 162, 235, 1)',#}
+                {#  'rgba(255, 206, 86, 1)',#}
+                {#  'rgba(75, 192, 192, 1)',#}
+                {#  'rgba(153, 102, 255, 1)',#}
+                {#  'rgba(255, 159, 64, 1)'#}
+                {#],#}
+                borderWidth: 0.5
+              }]
+            },
+            options: {
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }]
+              }
+            }
+          });
+
+          var piectx{{ question.id }} = document.getElementById("piechart_{{ question.id }}").getContext('2d');
+          var piemyChart{{ question.id }} = new Chart(piectx{{ question.id }}, {
+            type: 'pie',
+            data: {
+              labels: [{% for choice in mini_dict.keys %}"{{ choice.chart_text }}", {% endfor %}],
+              datasets: [{
+                label: 'out off {{ question.get_total_votes }} Votes',
+                  data: [{% for count in mini_dict.values %}{{ count }}, {% endfor %}],
+                backgroundColor: [{% for choice in mini_dict.keys %}"{{ choice.get_possitive_color }}", {% endfor %}],
+                {#borderColor: [#}
+                {#  'rgba(255,99,132,1)',#}
+                {#  'rgba(54, 162, 235, 1)',#}
+                {#  'rgba(255, 206, 86, 1)',#}
+                {#  'rgba(75, 192, 192, 1)',#}
+                {#  'rgba(153, 102, 255, 1)',#}
+                {#  'rgba(255, 159, 64, 1)'#}
+                {#],#}
+                borderWidth: 0.5
+              }]
+            },
+            options: {
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true
+                  }
+                }]
+              }
+            }
+          });
+
+  {% endfor %}
+</script>
+
+
+
+{% endblock %}

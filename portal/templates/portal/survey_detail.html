@@ -1,0 +1,40 @@
+{% extends "portal/base.html" %}
+
+{% block title %}{{ survey.name }}{% endblock %}
+
+{% block content %}
+    <br><br><br>
+    <div class="container">
+
+        <div class="card border-primary">
+          <div class="card-header blue-gradient text-white">
+              <h5 class="font-weight-bold text-lg-center">{{ survey.name }}</h5>
+          </div>
+          <div class=" card-body">
+            <h6 class="card-title"><span class="text-primary">Purpose</span> : {{ survey.purpose }}</h6>
+               <br>
+              <ul class="list-group">
+                  <li class="list-group-item bg-light">
+                    <div class="md-v-line text-lg">Instructions</div>
+                  </li>
+                  {% for i in survey.get_instructions %}
+                  <li class="list-group-item ">
+                    {{ forloop.counter }}- {{ i }}
+                  </li>
+                  {% endfor %}
+            </ul>
+
+            <br><br>
+
+            <div class="col-lg-6" style="margin: auto">
+                <a href="{% url "survey_start" slug=survey.slug %}" class="btn btn-primary blue-gradient btn-lg btn-block" >START SURVEY</a>
+            </div>
+                <br><br><br>
+              <center><a href="{% url "admin_home" %}" class="text-info ">Survey Administration</a></center>
+
+          </div>
+        </div>
+    </div>
+
+
+{% endblock %}
